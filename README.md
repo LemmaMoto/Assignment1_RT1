@@ -58,7 +58,7 @@ The program is intended to operate within a simulated environment using a Python
     python run.py <your-script>.py
     ```
 
-    Replace `<your-script>` with the name of your Python script.
+    Replace `<your-script>` with the name `assignment` to run the simulation.
 
 ## Program Structure
 
