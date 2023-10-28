@@ -78,7 +78,7 @@ def reach_token1(code,handle):
         dist, rot_y= SearchToken(code) # we look for markers
         if dist == -1:
             print("I don't see",code," token!!")
-            turn(100, 0.01)  # if no markers are detected, the program ends
+            turn(10, 1)  # if no markers are detected, the program ends
         elif dist < d_th1 and handle==True or dist < d_th and handle==False:
             print("Found",code) 
             var = False                                         
