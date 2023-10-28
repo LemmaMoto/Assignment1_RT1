@@ -2,162 +2,167 @@ from __future__ import print_function
 import time
 from sr.robot import *
 
+# Thresholds for distance and angle
+a_th = 0.5  
+d_th = 0.4 
+d_th_2_pair = 0.6 
 
+# A set to store paired golden boxes
+paired_boxes = set()  
 
-a_th = 0.5  # angle threshold
-d_th = 0.4 # distance threshold
-d_th1 = 0.6
-paired_boxes = set()  # A set to store paired golden boxes
-
-
-
+# Initialize the robot
 R = Robot()
 
-
-
+# Function to drive for a given time
 def drive(speed, seconds):
     R.motors[0].m0.power = speed
     R.motors[0].m1.power = speed
-    time.sleep(seconds)
+    time.sleep(seconds) 
     R.motors[0].m0.power = 0
     R.motors[0].m1.power = 0
 
-
+# Function to turn for a given time
 def turn(speed, seconds):
-
     R.motors[0].m0.power = speed
     R.motors[0].m1.power = -speed
     time.sleep(seconds)
     R.motors[0].m0.power = 0
     R.motors[0].m1.power = 0
 
-
+# Function to search for a new token
 def Search4NewToken():
-        code = None
-        dist = 100
-        for token in R.see():
-            if token.dist < dist and token.info.code not in paired_boxes:
-                dist = token.dist
-                rot_y = token.rot_y
-                code = token.info.code
-           
-        if dist == 100:
-            return None
-        else:
-            return code
-def SearchpairedToken():    
+    NewToken = None
     dist = 100
-    code = None  # Inizializziamo code come None
     for token in R.see():
-        if token.dist < dist and token.info.code in paired_boxes:
+        if token.dist < dist and token.info.code not in paired_boxes: #if the token is not paired
             dist = token.dist
-            rot_y = token.rot_y
-            code = token.info.code
-    return code  # Restituisci il code trovato, che potrebbe essere None se nessun token abbinato è stato trovato
+            NewToken = token.info.code
+           
+    if dist == 100:
+        return None
+    else:
+        return NewToken
+        
+# Function to search for a paired token
+def SearchPairedToken():    
+    dist = 100
+    PairedToken = None  
+    for token in R.see():
+        if token.dist < dist and token.info.code in paired_boxes: #if the token is paired
+            dist = token.dist
+            PairedToken = token.info.code
+    if dist == 100:
+            return None
+    else:
+            return PairedToken  
+    
 
-
+# Function to search for a token with a given code
 def SearchToken(code):
     dist = 100
     for token in R.see():
-      if token.info.code == code:
-        if token.dist < dist:
+      if token.info.code == code: #if the token has the given code
+        if token.dist < dist: 
             dist = token.dist
-            rot_y = token.rot_y
-            print("rot_y", rot_y)   
+            rot_y = token.rot_y  
     if dist == 100:
         return -1, -1
     else:
         return dist, rot_y
 
-
-
+# Function to reach a token with a given code
 def reach_token1(code,handle):
-    print("I'm looking for",code)
+    print("I'm looking for Token",code)
     var = True
-    while var:
+    while var: # we look for the token until we find it
         dist, rot_y= SearchToken(code) # we look for markers
         if dist == -1:
-            print("I don't see",code," token!!")
-            turn(10, 1)  # if no markers are detected, the program ends
-        elif dist < d_th1 and handle==True or dist < d_th and handle==False:
-            print("Found",code) 
+            print("I can't see",code," token!!")
+            turn(100, 0.01)  # if no markers are detected, the program ends
+        elif dist < d_th_2_pair and handle==True or dist < d_th and handle==False:
+            print("Found Token",code) 
             var = False                                         
         elif rot_y < -a_th:  # if the robot is not well aligned with the token, we move it on the left
-            print("Left a bit...",code)
+            print("Left a bit for Token",code)
             turn(-2, 0.001)
         elif rot_y > a_th:  # if the robot is not well aligned with the token, we move it on the right
-            print("Right a bit...",code)
+            print("Right a bit for Token",code)
             turn(+2, 0.001)
         elif -a_th <= rot_y <= a_th:  # if the robot is well aligned with the token, we go forward
-            print("Ah, here we are!",code)
+            print("Ah, here we are, for Token",code)
             drive(100, 0.1)
 
-def BringToken_i_2_1(code,code1):
+# Function to bring a token with a given UnpairedToken to a given PairedToken
+def BringToken_i_2_1(UnpairedToken,PairedToken):
     handle=False
-    reach_token1(code,handle) 
+    reach_token1(UnpairedToken,handle) #we reach the unpaired token
     R.grab()
     handle=True
     print("Gotcha!")
-    print("I'm going to bring",code,"to",code1)
-    reach_token1(code1,handle)
+    print("I'm going to bring",UnpairedToken,"to",PairedToken)
+    reach_token1(PairedToken,handle) #we reach the paired token
     R.release()
-    paired_boxes.add(code)
+    paired_boxes.add(UnpairedToken) #we add the unpaired token to the set of paired tokens
     print("Released!")
     drive(-100, 0.5)
 
-
+# Main function to bring all tokens to one place near the first token seen
 def main():
-    var1=True
     time=0
-    first=None
-    while var1 :
+    FindFirstToken=True
+    FirstToken=None
+
+    while FindFirstToken : #we look for the first token
         time=0
-        if first == None :
-            first = Search4NewToken()
-            paired_boxes.add(first)
-            print("first", first)
-            var1=False
-            var2=True
-            while var2:
-                code=None
-                code = Search4NewToken()
-                print("code", code)
-                if code != None:
+        if FirstToken == None : #if we don't find the first token
+            FirstToken = Search4NewToken()
+            paired_boxes.add(FirstToken)
+            print("FirstToken", FirstToken)
+            FindFirstToken=False
+            FindUnpairedToken=True
+
+            while FindUnpairedToken: #we look for unpaired tokens
+                UnpairedToken=None
+                UnpairedToken = Search4NewToken()
+                print("UnpairedToken", UnpairedToken)
+                if UnpairedToken != None: #if we find an unpaired token
                     time=0
-                    var2=False
-                    var3=True
-                    while var3:
-                        code1=None
-                        code1 = SearchpairedToken()
-                        print("code1", code1)
-                        if code1 != None:
-                            print("code1 qwertyuiowertyui", code1)
+                    FindUnpairedToken=False
+                    FindPairedToken=True
+
+                    while FindPairedToken: #we look for paired tokens
+                        PairedToken=None
+                        PairedToken = SearchPairedToken()
+                        print("PairedToken", PairedToken)
+                        if PairedToken != None: #if we find a paired token
+                            print("PairedToken ", PairedToken)
                             time=0
-                            BringToken_i_2_1(code,code1)
-                            var3=False
-                            var2=True
-                        elif code1 == None:
+                            BringToken_i_2_1(UnpairedToken,PairedToken)
+                            FindPairedToken=False
+                            FindUnpairedToken=True
+                        elif PairedToken == None: #if we don't find a paired token
                             print("I don't see any paired token!!")
                             turn(100, 0.1)
                             time=time+1
-                            if time==20:
+                            if time==20: #if we don't find a paired token for 20 seconds
                                 print("all token are not paired click esc to close")
-                                var3=False
-                elif code == None:
+                                FindPairedToken=False
+
+                elif UnpairedToken == None: #if we don't find an unpaired token
                     print("I don't see any token!!")
                     turn(100, 0.1)
                     time=time+1
-                    if time==20:
+                    if time==20: #if we don't find an unpaired token for 20 seconds
                         print("all token are paired click esc to close")
                         exit()
-        elif time<20:
+
+        elif time<20: #if we don't find the first token for 20 seconds
             print("I don't see any token!!")
-            turn(100, 0.1)  # if no markers are detected, the program ends
+            turn(100, 0.1)  
             time=time+1
-            if time==20:
+            if time==20: #if we don't find the first token for 20 seconds
                 print("there are no token")
                 exit()
 
-
-
+# Call the main function
 main()
