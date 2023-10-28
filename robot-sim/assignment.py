@@ -62,8 +62,7 @@ def SearchToken(code):
       if token.info.code == code:
         if token.dist < dist:
             dist = token.dist
-            rot_y = token.rot_y
-            print("rot_y", rot_y)   
+            rot_y = token.rot_y  
     if dist == 100:
         return -1, -1
     else:
