@@ -142,7 +142,7 @@ def main():
                             FindUnpairedToken=True
                         elif PairedToken == None: #if we don't find a paired token
                             print("I don't see any paired token!!")
-                            turn(100, 0.1)
+                            turn(-100, 0.1)
                             time=time+1
                             if time==20: #if we don't find a paired token for 20 seconds
                                 print("all token are not paired click esc to close")
