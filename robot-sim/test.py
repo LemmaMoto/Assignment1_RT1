@@ -35,13 +35,13 @@ def search_token(token_type, code=None):
     found_token = None
     rot_y = None
     for token in R.see():
-        if token_type == 'new' and token.dist < dist and token.info.code not in paired_boxes:
+        if token_type == 'new' and token.dist < dist and token.info.code not in paired_boxes: #if the token is not paired
             dist = token.dist
             found_token = token.info.code
-        elif token_type == 'paired' and token.dist < dist and token.info.code in paired_boxes:
+        elif token_type == 'paired' and token.dist < dist and token.info.code in paired_boxes: #if the token is paired
             dist = token.dist
             found_token = token.info.code
-        elif token_type == 'specific' and token.info.code == code and token.dist < dist:
+        elif token_type == 'specific' and token.info.code == code and token.dist < dist: #if the token is the one we are looking for
             dist = token.dist
             found_token = token.info.code
             rot_y = token.rot_y
@@ -88,12 +88,12 @@ def BringToken_i_2_1(UnpairedToken,PairedToken):
 
 # Main function to bring all tokens to one place near the first token seen
 def main():
-    while True:
+    while True: #we continue until we press esc
         time = 0
         FindFirstToken = True
         FirstToken = None
 
-        while FindFirstToken:
+        while FindFirstToken: #we look for the first token until we find it
             if FirstToken is None:
                 FirstToken = search_token('new')
                 paired_boxes.add(FirstToken)
@@ -101,7 +101,7 @@ def main():
                 FindFirstToken = False
                 FindUnpairedToken = True
 
-        while FindUnpairedToken:
+        while FindUnpairedToken: #we look for unpaired tokens until we find one
             UnpairedToken = search_token('new')
             print("UnpairedToken", UnpairedToken)
             if UnpairedToken is not None:
@@ -116,7 +116,7 @@ def main():
                     print("all token are paired click esc to close")
                     exit()
 
-        while FindPairedToken:
+        while FindPairedToken: #we look for paired tokens until we find one
             PairedToken = search_token('paired')
             print("PairedToken", PairedToken)
             if PairedToken is not None:
@@ -130,7 +130,7 @@ def main():
                 turn(-100, 0.1)
                 time += 1
                 if time == 20:
-                    print("all token are not paired click esc to close")
+                    print("all token are paired click esc to close")
                     FindPairedToken = False
 
 # Call the main function
