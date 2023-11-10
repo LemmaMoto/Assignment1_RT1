@@ -66,7 +66,7 @@ The program is intended to operate within a simulated environment using a Python
 
 - `assignment.py`: Contains the main robot control functions for movement, token detection, pairing, and more.
 
-- `assignment_more_readable.py`: Contains a more readable solution that works exactly the same as `assignment.py` but i didn't had time to rewrite the pseudo-code and to comment the parts I cropped up.
+- `assignment_more_readable.py`: Contains a more readable solution that works exactly the same as `assignment.py` but i didn't had time to rewrite the pseudo-code and i'm not sure that is "best way sinonimo".
 
 
 ## Program Flow
