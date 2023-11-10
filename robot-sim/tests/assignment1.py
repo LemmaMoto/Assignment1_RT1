@@ -152,7 +152,7 @@ def reach_dist_rot(code,variabile):
         
         elif -a_th <= rot_y <= a_th:  # if the robot is well aligned with the token, we go forward
             print("Ah, here we are!.")
-            drive(30, 0.5)
+            drive(100, 0.01)
         elif rot_y < -a_th:  # if the robot is not well aligned with the token, we move it on the left or on the right
             print("Left a bit...")
             turn(-2, 0.5)
@@ -162,12 +162,12 @@ def reach_dist_rot(code,variabile):
 
 
 def exploration():
-    drive(40,7)
+    drive(160,3)
     lista = []
-    for i in range(0,10):
+    for i in range(0,20):
         for token in R.see():
          lista.append(token.info.code)
-         turn(10, 2)
+         turn(10, 0.5)
     
     print(lista)
     lista_elem_unici = set(lista)
