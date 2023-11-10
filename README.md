@@ -66,7 +66,7 @@ The program is intended to operate within a simulated environment using a Python
 
 - `assignment.py`: Contains the main robot control functions for movement, token detection, pairing, and more.
 
-- `assignment_more_readable.py`: Contains a more readable solution that works exactly the same as `assignment.py` but i didn't had time to rewrite the pseudo-code and i'm not sure that is "best way sinonimo".
+- `assignment_more_readable.py`: Contains a more readable solution that works exactly the same as `assignment.py` but i didn't had time to rewrite the pseudo-code and i'm not sure that is a best practice .
 
 
 ## Program Flow
@@ -82,134 +82,134 @@ The program is intended to operate within a simulated environment using a Python
 - Create an empty set to store paired tokens
 
 ## Function to drive for a given time
-- Define function to drive for a given time
-   Set motor power to speed
-   Wait for seconds
-   Set motor power to 0
+- Define function to drive for a given time  
+   Set motor power to speed  
+   Wait for seconds  
+   Set motor power to 0  
 
 ## Function to turn for a given time
-- Define function to turn for a given time
-   Set motor power for the left motor to speed
-   Set motor power for the right motor to -speed
-   Wait for seconds
-   Set motor power for both motors to 0
+- Define function to turn for a given time  
+   Set motor power for the left motor to speed  
+   Set motor power for the right motor to -speed  
+   Wait for seconds  
+   Set motor power for both motors to 0  
 
 ## Function to search for a new token
-- Define function to search for a new token
-   Set NewToken to None
-   Set dist to 100
-   For each token seen by the robot:
-    - If the token is not paired and closer than the current closest token:
-       Set dist to the distance to the token
-       Set NewToken to the code of the token
-  - If no unpaired token is found:
-     Return None
-  - Else:
-     Return the code of the closest unpaired token
+- Define function to search for a new token  
+   Set NewToken to None  
+   Set dist to 100  
+   For each token seen by the robot:  
+    - If the token is not paired and closer than the current closest token:  
+       Set dist to the distance to the token  
+       Set NewToken to the code of the token  
+  - If no unpaired token is found:  
+     Return None  
+  - Else:  
+     Return the code of the closest unpaired token  
 
 ## Function to search for a paired token
-- Define function to search for a paired token
-   Set PairedToken to None
-   Set dist to 100
-   For each token seen by the robot:
-    - If the token is paired and closer than the current closest token:
-       Set dist to the distance to the token
-       Set PairedToken to the code of the token
-  - If no paired token is found:
-     Return None
-  - Else:
-     Return the code of the closest paired token
+- Define function to search for a paired token  
+   Set PairedToken to None  
+   Set dist to 100  
+   For each token seen by the robot:  
+    - If the token is paired and closer than the current closest token:  
+       Set dist to the distance to the token  
+       Set PairedToken to the code of the token  
+  - If no paired token is found:  
+     Return None  
+  - Else:  
+     Return the code of the closest paired token  
 
 ## Function to search for a token with a given code
-- Define function to search for a token with a given code
-   Set dist to 100
-   For each token seen by the robot:
-    - If the token has the given code and closer than the current closest token:
-       Set dist to the distance to the token
-       Set rot_y to the rotation angle to the token
-  - If no token with the given code is found:
-     Return -1, -1
-  - Else:
-     Return the distance and rotation angle to the closest token with the given code
+- Define function to search for a token with a given code  
+   Set dist to 100  
+   For each token seen by the robot:  
+    - If the token has the given code and closer than the current closest token:  
+       Set dist to the distance to the token  
+       Set rot_y to the rotation angle to the token  
+  - If no token with the given code is found:  
+     Return -1, -1  
+  - Else:  
+     Return the distance and rotation angle to the closest token with the given code  
 
 ## Function to reach a token with a given code
-- Define function to reach a token with a given code
-   Print a message indicating that the robot is looking for the token
-   Set var to True
-   While var is True:
-     Search for the token with the given code
-    - If the token is not found:
-       Print a message indicating that the token cannot be found
-       Turn the robot to search for the token
-    - Else if the token is close enough to be grabbed and the robot is not already handling a token:
-       Print a message indicating that the token is found
-       Set var to False
-    - Else if the robot is not well aligned with the token:
-       Turn the robot to align with the token
-    - Else if the robot is well aligned with the token:
-       Drive the robot forward
+- Define function to reach a token with a given code  
+   Print a message indicating that the robot is looking for the token  
+   Set var to True  
+   While var is True:  
+     Search for the token with the given code  
+    - If the token is not found:  
+       Print a message indicating that the token cannot be found  
+       Turn the robot to search for the token  
+    - Else if the token is close enough to be grabbed and the robot is not already handling a token:  
+       Print a message indicating that the token is found  
+       Set var to False  
+    - Else if the robot is not well aligned with the token:  
+       Turn the robot to align with the token  
+    - Else if the robot is well aligned with the token:  
+       Drive the robot forward  
 
 ## Function to bring an unpaired token to a paired token
-- Define function to bring an unpaired token to a paired token
-   Set handle to False
-   Reach the unpaired token with the given code
-   Grab the token
-   Set handle to True
-   Print a message indicating that the robot is bringing the unpaired token to the paired token
-   Reach the paired token with the given code
-   Release the token
-   Add the unpaired token to the set of paired tokens
-   Print a message indicating that the token is released
-   Drive the robot backward
+- Define function to bring an unpaired token to a paired token  
+   Set handle to False  
+   Reach the unpaired token with the given code  
+   Grab the token  
+   Set handle to True  
+   Print a message indicating that the robot is bringing the unpaired token to the paired token  
+   Reach the paired token with the given code  
+   Release the token  
+   Add the unpaired token to the set of paired tokens  
+   Print a message indicating that the token is released  
+   Drive the robot backward  
 
 ## Main function to bring all tokens to one place near the first token seen
-- Define the main function
-   Set time to 0
-   Set FindFirstToken to True
-   Set FirstToken to None
-  - While FindFirstToken is True:
-    - If the first token is not found:
-       Search for the first token
-      - If the first token is found:
-         Add it to the set of paired tokens
-         Set FindFirstToken to False
-         Set FindUnpairedToken to True
-        - While FindUnpairedToken is True:
-           Search for an unpaired token
-          - If an unpaired token is found:
-             Set time to 0
-             Set FindUnpairedToken to False
-             Set FindPairedToken to True
-            - While FindPairedToken is True:
-               Search for a paired token
-              - If a paired token is found:
-                 Set time to 0
-                 Bring the unpaired token to the paired token
-                 Set FindPairedToken to False
-                 Set FindUnpairedToken to True
-              - Else if no paired token is found:
-                 Print a message indicating that no paired token is found
-                 Turn the robot to search for a paired token
-                 Increment time
-                - If time reaches 20 seconds:
-                   Print a message indicating that all tokens are not paired
-                   Exit the program
-          - Else if no unpaired token is found:
-             Print a message indicating that no token is found
-             Turn the robot to search for a token
-             Increment time
-            - If time reaches 20 seconds:
-               Print a message indicating that all tokens are paired
-               Exit the program
-    - Else if the first token is not found for 20 seconds:
-       Print a message indicating that no token is found
-       Turn the robot to search for a token
-       Increment time
-      - If time reaches 20 seconds:
-         Print a message indicating that there are no tokens
+- Define the main function  
+   Set time to 0  
+   Set FindFirstToken to True  
+   Set FirstToken to None  
+  - While FindFirstToken is True:  
+    - If the first token is not found:  
+       Search for the first token  
+      - If the first token is found:  
+         Add it to the set of paired tokens  
+         Set FindFirstToken to False  
+         Set FindUnpairedToken to True  
+        - While FindUnpairedToken is True:  
+           Search for an unpaired token  
+          - If an unpaired token is found:  
+             Set time to 0  
+             Set FindUnpairedToken to False  
+             Set FindPairedToken to True  
+            - While FindPairedToken is True:  
+               Search for a paired token  
+              - If a paired token is found:  
+                 Set time to 0  
+                 Bring the unpaired token to the paired token  
+                 Set FindPairedToken to False  
+                 Set FindUnpairedToken to True  
+              - Else if no paired token is found:  
+                 Print a message indicating that no paired token is found  
+                 Turn the robot to search for a paired token  
+                 Increment time  
+                - If time reaches 20 seconds:  
+                   Print a message indicating that all tokens are not paired  
+                   Exit the program  
+          - Else if no unpaired token is found:  
+             Print a message indicating that no token is found  
+             Turn the robot to search for a token  
+             Increment time  
+            - If time reaches 20 seconds:  
+               Print a message indicating that all tokens are paired  
+               Exit the program  
+    - Else if the first token is not found for 20 seconds:  
+       Print a message indicating that no token is found  
+       Turn the robot to search for a token  
+       Increment time  
+      - If time reaches 20 seconds:  
+         Print a message indicating that there are no tokens  
 
 ## Call the main function
-- Call the main function
+- Call the main function  
 
 
 ## Customization
@@ -230,14 +230,6 @@ This program is open-source and available under the [MIT License](LICENSE). Feel
 ## Acknowledgments
 
 This program was developed with the help of the Python Robotics Simulator and the Student Robotics API.
-
----
-
-Feel free to add any additional details, dependencies, or acknowledgments specific to your environment or use case. This README provides a general structure to get you started.
-
-
-You have also the solutions of the exercises (folder solutions)
-
 
 
 Robot API
