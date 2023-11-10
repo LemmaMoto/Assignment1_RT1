@@ -7,7 +7,7 @@ Some of the arenas and the exercises have been modified for the Research Track I
 Installing and running
 ----------------------
 
-The simulator requires a Python 2.7 installation, the [pygame](http://pygame.org/) library, [PyPyBox2D](https://pypi.python.org/pypi/pypybox2d/2.1-r331), and [PyYAML](https://pypi.python.org/pypi/PyYAML/).
+The simulator requires a Python 2.7 or Python 3 installation, the [pygame](http://pygame.org/) library, [PyPyBox2D](https://pypi.python.org/pypi/pypybox2d/2.1-r331), and [PyYAML](https://pypi.python.org/pypi/PyYAML/).
 
 Pygame, unfortunately, can be tricky (though [not impossible](http://askubuntu.com/q/312767)) to install in virtual environments. If you are using `pip`, you might try `pip install hg+https://bitbucket.org/pygame/pygame`, or you could use your operating system's package manager. Windows users could use [Portable Python](http://portablepython.com/). PyPyBox2D and PyYAML are more forgiving, and should install just fine using `pip` or `easy_install`.
 
@@ -26,7 +26,7 @@ On Ubuntu, this can be accomplished by:
 To run one or more scripts in the simulator, use `run.py`, passing it the file names. 
 
 ```bash
-$ python3 run.py assignment.py
+$ python3 run.py <file_name>
 ```
 
 # Token Handling Robot
@@ -64,9 +64,10 @@ The program is intended to operate within a simulated environment using a Python
 
 - `run.py`: Entry point to run the program using the Python Robotics Simulator.
 
-- `token_robot.py`: Contains the main robot control functions for movement, token detection, pairing, and more.
+- `assignment.py`: Contains the main robot control functions for movement, token detection, pairing, and more.
 
-- `solutions/`: Directory containing solutions for various tasks and exercises.
+- `assignment_more_readable.py`: Contains a more readable solution that works exactly the same as `assignment.py` but i didn't had time to rewrite the pseudo-code and to comment the parts I cropped up.
+
 
 ## Program Flow
 # Token Handling Robot Pseudocode
