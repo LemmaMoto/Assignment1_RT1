@@ -39,7 +39,7 @@ The program is intended to operate within a simulated environment using a Python
 
 1. **Token Detection:** The robot scans its environment for tokens. It identifies unpaired tokens and searches for their paired counterparts.
 
-2. **Token Pairing:** The robot pairs unpaired tokens with their corresponding tokens.
+2. **Token Pairing:** The robot pairs unpaired tokens with the other tokens.
 
 3. **Movement Control:** It can move forward, turn, and stop as needed to reach and manipulate tokens.
 
@@ -221,7 +221,7 @@ You can customize the program by adjusting the threshold values for distance and
 - Implement additional error handling and recovery mechanisms to handle unexpected situations effectively.
 - Integrate more advanced path planning and obstacle avoidance algorithms to improve the robot's efficiency.
 - Enhance the visual feedback to provide a more detailed view of the robot's surroundings.
-- Consider additional functionalities such as token ordering, more complex token manipulation, or real-time monitoring.
+
 
 ## License
 
